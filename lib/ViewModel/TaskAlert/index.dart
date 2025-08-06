@@ -63,20 +63,25 @@ class TaskAlertViewModel extends ChangeNotifier {
         return AlertDialog(
           title: Text(task == null ? 'Añadir Nueva Tarea' : 'Editar Tarea'),
           contentPadding: const EdgeInsets.all(16.0),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: titleController,
-                decoration: const InputDecoration(labelText: 'Título de la tarea'),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                maxLines: 4,
-                controller: taskController,
-                decoration: const InputDecoration(labelText: 'Descripción de la tarea'),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(labelText: 'Título de la tarea'),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  maxLines: 4,
+                  controller: taskController,
+                  decoration: const InputDecoration(
+                    labelText: 'Descripción de la tarea',
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
