@@ -65,6 +65,7 @@ class _PantallaHomeState extends State<PantallaHome> {
               child: TablaWidget(
                 title: 'Tareas Pendientes',
                 tasks: _taskViewModel.tasks,
+                viewModel: _taskViewModel,
               ),
             ),
           ],

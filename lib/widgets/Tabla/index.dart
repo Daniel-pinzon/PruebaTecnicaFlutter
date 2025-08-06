@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../Model/TaskSave/index.dart';
+import '../../ViewModel/TaskAlert/index.dart';
 
 class TablaWidget extends StatelessWidget {
   final String title;
   final List<Task> tasks;
+  final TaskAlertViewModel viewModel;
 
   const TablaWidget({
     super.key,
     required this.title,
     required this.tasks,
+    required this.viewModel,
   });
 
   @override
@@ -23,6 +26,7 @@ class TablaWidget extends StatelessWidget {
     }
 
     return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
@@ -36,6 +40,23 @@ class TablaWidget extends StatelessWidget {
             subtitle: task.description.isNotEmpty
                 ? Text(task.description)
                 : null,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.blue),
+                  onPressed: () {
+                    viewModel.showAddTaskDialog(context, task: task, index: index);
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: () {
+                    viewModel.deleteTask(context, index);
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
