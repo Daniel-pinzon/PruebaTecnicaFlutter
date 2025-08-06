@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import '../../Model/TaskSave/index.dart';
 
-class TaskViewModel extends ChangeNotifier {
-  final List<String> _tasks = [];
-   final TextEditingController titleController = TextEditingController();
+class TaskAlertViewModel extends ChangeNotifier {
+  final Box<Task> _taskBox = Hive.box<Task>('tasks');
+  final TextEditingController titleController = TextEditingController();
   final TextEditingController taskController = TextEditingController();
 
-  List<String> get tasks => _tasks;
+  List<Task> get tasks => _taskBox.values.toList();
 
-  void addTask(String title) {
-    _tasks.add(title);
+  void addTask(String title, String description) {
+    final task = Task(title: title, description: description);
+    _taskBox.add(task);
+    titleController.clear();
     taskController.clear();
     notifyListeners();
   }
@@ -49,7 +53,7 @@ class TaskViewModel extends ChangeNotifier {
               child: const Text('Agregar'),
               onPressed: () {
                 if (titleController.text.trim().isNotEmpty) {
-                  addTask(taskController.text.trim());
+                  addTask(titleController.text.trim(), taskController.text.trim());
                   Navigator.of(context).pop();
                 }
               },

@@ -18,15 +18,18 @@ class TaskAdapter extends TypeAdapter<Task> {
     };
     return Task(
       title: fields[0] as String,
+      description: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Task obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.title);
+      ..write(obj.title)
+      ..writeByte(1)
+      ..write(obj.description);
   }
 
   @override

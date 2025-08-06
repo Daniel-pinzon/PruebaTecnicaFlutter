@@ -7,7 +7,10 @@ class Task extends HiveObject {
   @HiveField(0)
   String title;
 
-  Task({required this.title});
+  @HiveField(1)
+  String description;
+
+  Task({required this.title, required this.description});
 }
 
 // dev_dependencies:

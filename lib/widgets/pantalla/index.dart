@@ -3,8 +3,33 @@ import '../Button/index.dart';
 import '../Tabla/index.dart';
 import '../../ViewModel/TaskAlert/index.dart';
 
-class PantallaHome extends StatelessWidget {
+class PantallaHome extends StatefulWidget {
   const PantallaHome({super.key});
+
+  @override
+  State<PantallaHome> createState() => _PantallaHomeState();
+}
+
+class _PantallaHomeState extends State<PantallaHome> {
+  late TaskAlertViewModel _taskViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _taskViewModel = TaskAlertViewModel();
+    _taskViewModel.addListener(_onTasksChanged);
+  }
+
+  @override
+  void dispose() {
+    _taskViewModel.removeListener(_onTasksChanged);
+    _taskViewModel.dispose();
+    super.dispose();
+  }
+
+  void _onTasksChanged() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +37,9 @@ class PantallaHome extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.lightBlue, // Azulito
-        title: Text(
+        title: const Text(
           'Mi Lista de Tareas',
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Roboto',
             fontStyle: FontStyle.italic,
             fontSize: 24,
@@ -29,7 +54,7 @@ class PantallaHome extends StatelessWidget {
           children: [
             ButtonWidget(
               texto: 'Añadir',
-              onPressed: () => TaskViewModel().showAddTaskDialog(context),
+              onPressed: () => _taskViewModel.showAddTaskDialog(context),
               color: Colors.blue,
               textColor: Colors.white,
               fontSize: 18.0,
@@ -39,12 +64,7 @@ class PantallaHome extends StatelessWidget {
             Expanded(
               child: TablaWidget(
                 title: 'Tareas Pendientes',
-                items: [
-                  'Comprar víveres',
-                  'Lavar el coche',
-                  'Estudiar Flutter',
-                  'Hacer ejercicio',
-                ],
+                tasks: _taskViewModel.tasks,
               ),
             ),
           ],
